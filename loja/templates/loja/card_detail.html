@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ card.name }}</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #fafafa;
+            padding: 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .card-container {
+            display: flex;
+            gap: 40px;
+            background: #fff;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        .card-image img {
+            width: 300px;
+            border-radius: 10px;
+        }
+        .card-info {
+            max-width: 400px;
+        }
+        .card-info h1 {
+            margin-top: 0;
+            font-size: 24px;
+            color: #222;
+        }
+        .card-attribute {
+            margin: 5px 0;
+        }
+        .price {
+            font-size: 22px;
+            color: green;
+            font-weight: bold;
+            margin-top: 15px;
+        }
+        .stock {
+            color: #555;
+            font-size: 14px;
+        }
+        .add-to-cart {
+            margin-top: 20px;
+        }
+        .add-to-cart button {
+            background-color: #007bff;
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        .add-to-cart button:hover {
+            background-color: #0056b3;
+        }
+        .effect {
+            margin-top: 20px;
+            background: #f4f4f4;
+            padding: 10px;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="card-container">
+        <div class="card-image">
+            {% if card.image %}
+                <img src="{{ card.image.url }}" alt="{{ card.name }}">
+            {% endif %}
+        </div>
+
+        <div class="card-info">
+            <h1>{{ card.name }}</h1>
+            <p><strong>Card ID:</strong> {{ card.card_id }}</p>
+            <p><strong>Set:</strong> {{ card.card_set.name }}</p>
+            <p><strong>Rarity:</strong> {{ card.rarity }}</p>
+            <p><strong>Color:</strong> {{ card.color }}</p>
+            <p><strong>Type:</strong> {{ card.type }}</p>
+            <p><strong>Attribute:</strong> {{ card.attribute }}</p>
+            <p><strong>Life:</strong> {{ card.life }}</p>
+            <p><strong>Power:</strong> {{ card.power }}</p>
+            <p><strong>Counter:</strong> {{ card.counter }}</p>
+            <p><strong>Block Icon:</strong> {{ card.block_icon }}</p>
+            <p><strong>Effect:</strong> {{ card.effect }}</p>
+
+            {% if card.effect_pt %}
+                <p><strong>Effect (PT-BR):</strong> {{ card.effect_pt }}</p>
+            {% endif %}
+
+            <p class="price">💰 R$ {{ card.price|floatformat:2 }}</p>
+            <p class="stock">📦 Stock: {{ card.stock }}</p>
+
+            <div class="add-to-cart">
+                <a href="{% url 'add_to_cart' card.id %}">
+                    <button>🛒 Add to Cart</button>
+                </a>
+            </div>
+
+            <br>
+            <a href="{% url 'card_list' %}">← Back to Catalog</a>
+        </div>
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ titulo_pagina }}</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 30px;
+            background-color: #f4f4f4;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #333;
+        }
+
+        /* Grade dos cards */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 20px;
+            padding: 10px;
+        }
+
+        /* Card individual */
+        .card-item {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+            padding: 15px;
+            text-align: center;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .card-item:hover {
+            transform: scale(1.03);
+            box-shadow: 0 5px 12px rgba(0,0,0,0.2);
+        }
+
+        .card-item img {
+            max-width: 100%;
+            border-radius: 8px;
+            height: 250px;
+            object-fit: cover;
+        }
+
+        .card-name {
+            font-size: 1.1em;
+            font-weight: bold;
+            margin-top: 10px;
+            color: #222;
+        }
+
+        .card-info {
+            font-size: 0.9em;
+            color: #666;
+        }
+
+        .card-price {
+            color: green;
+            font-weight: bold;
+            font-size: 1.1em;
+            margin-top: 8px;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>{{ titulo_pagina }}</h1>
+
+    <!-- 🔹 FILTRO DE JOGOS E ORDEM -->
+    <form method="get" style="text-align:center; margin-bottom: 25px;">
+        <label for="game">Filtrar por jogo:</label>
+        <select name="game" id="game" style="padding: 5px 8px; border-radius: 5px;">
+            <option value="">Todos</option>
+            {% for game in games %}
+                <option value="{{ game.id }}" {% if request.GET.game == game.id|stringformat:"s" %}selected{% endif %}>
+                    {{ game.name }}
+                </option>
+            {% endfor %}
+        </select>
+
+        <label for="order" style="margin-left: 15px;">Ordenar por preço:</label>
+        <select name="order" id="order" style="padding: 5px 8px; border-radius: 5px;">
+            <option value="">Padrão</option>
+            <option value="asc" {% if request.GET.order == 'asc' %}selected{% endif %}>Menor → Maior</option>
+            <option value="desc" {% if request.GET.order == 'desc' %}selected{% endif %}>Maior → Menor</option>
+        </select>
+
+        <button type="submit" style="margin-left:10px; padding: 5px 10px; border:none; border-radius:5px; background-color:#007BFF; color:white;">
+            Aplicar
+        </button>
+    </form>
+
+    {% if cards %}
+        <div class="cards-grid">
+            {% for card in cards %}
+                <div class="card-item">
+                    <a href="{% url 'card_detail' card.id %}">
+                        {% if card.image %}
+                            <img src="{{ card.image.url }}" alt="{{ card.name }}">
+                        {% else %}
+                            <div style="height:250px; background:#ddd; display:flex; align-items:center; justify-content:center;">
+                                <span>Sem imagem</span>
+                            </div>
+                        {% endif %}
+                        <div class="card-name">{{ card.name }}</div>
+                        <div class="card-info">{{ card.card_set.name }} - {{ card.rarity }}</div>
+                        <div class="card-price">R$ {{ card.price|floatformat:2 }}</div>
+                    </a>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p style="text-align:center;">Nenhum card encontrado no banco de dados.</p>
+    {% endif %}
+
+</body>
+</html>
