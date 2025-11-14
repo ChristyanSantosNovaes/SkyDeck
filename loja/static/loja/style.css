@@ -1,0 +1,167 @@
+/* GRID DE CARTAS */
+.cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 20px;
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+/* ITEM DE CARTA */
+.card-item {
+    text-align: center;
+    color: white;
+}
+
+/* TAMANHO DA IMAGEM */
+.card-item img {
+    width: 160px;
+    height: auto;
+    border-radius: 10px;
+    transition: transform 0.2s ease-in-out;
+}
+
+/* EFEITO HOVER */
+.card-item img:hover {
+    transform: scale(1.05);
+}
+
+/* TEXTOS */
+.card-name {
+    font-weight: bold;
+    margin-top: 8px;
+}
+
+.card-info {
+    font-size: 14px;
+    opacity: 0.8;
+}
+
+.card-price {
+    font-size: 16px;
+    margin-top: 5px;
+}
+
+/* BARRA DE TÍTULO */
+.card-header-bar {
+    background: linear-gradient(90deg, #08203e, #1b2c52, #234b8a);
+    border-radius: 8px;
+    color: #00d9ff;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+/* IMAGEM DO DETALHE */
+.card-image {
+    max-height: 500px;
+    border-radius: 12px;
+    box-shadow: 0px 0px 18px rgba(0, 150, 255, 0.4);
+}
+
+/* ATRIBUTOS */
+.card-attributes {
+    background: rgba(255, 255, 255, 0.07);
+    border-radius: 10px;
+    backdrop-filter: blur(4px);
+}
+
+.card-attributes p {
+    font-size: 1.07rem;
+    margin-bottom: 6px;
+}
+
+/* FILTRO */
+.filter-box {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    padding: 12px;
+    background: rgba(0, 0, 0, 0.25);
+    border-radius: 12px;
+    backdrop-filter: blur(6px);
+    margin-bottom: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.filter-box label {
+    font-size: 0.9rem;
+    color: #aee2ff;
+}
+
+.filter-box input,
+.filter-box select {
+    padding: 8px 10px;
+    border-radius: 8px;
+    border: 1px solid #444;
+    background: rgba(255,255,255,0.08);
+    color: white;
+    font-size: 14px;
+    width: 160px;
+}
+
+.filter-box button {
+    padding: 8px 15px;
+    background: #00c8ff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.filter-box button:hover {
+    background: #0097cc;
+}
+
+/* CENTRALIZAR O FILTRO */
+.filter-box {
+    justify-content: center;   /* Centraliza os elementos */
+    text-align: center;        /* Alinha o conteúdo */
+    margin-left: auto;         /* Centraliza o box na página */
+    margin-right: auto;        /* Centraliza o box na página */
+    max-width: 900px;          /* Evita ficar muito largo */
+}
+
+/* CAIXA DE FILTRO CENTRALIZADA E COM TAMANHO LIMITADO */
+.filter-box {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+
+    padding: 12px;
+    background: rgba(0, 0, 0, 0.25);
+    border-radius: 12px;
+    backdrop-filter: blur(6px);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+
+    max-width: 750px;    /* 🔥 TAMANHO MÁXIMO CONTROLADO */
+    margin: 0 auto 25px; /* 🔥 CENTRALIZADO NA PÁGINA */
+    justify-content: center; /* 🔥 ITENS CENTRALIZADOS */
+    text-align: center;
+}
+
+/* Inputs do filtro */
+.filter-box input,
+.filter-box select {
+    padding: 8px 10px;
+    border-radius: 8px;
+    border: 1px solid #444;
+    background: rgba(255,255,255,0.08);
+    color: white;
+    font-size: 14px;
+    width: 150px;   /* 🔥 deixa os campos compactos */
+}
+
+/* Botão */
+.filter-box button {
+    padding: 8px 15px;
+    background: #00c8ff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.filter-box button:hover {
+    background: #0097cc;
+}
+

@@ -1,68 +1,67 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from .models import Card, Game, Order, OrderItem
+from .models import Card, Game, Order, OrderItem, CardSet
 
 
-# 📦 Vitrine de Cards (com filtros)
-def card_list_view(request):
+def card_list(request):
     cards = Card.objects.all()
-    games = Game.objects.all()
 
-    # 🔹 Filtro por jogo
-    game_id = request.GET.get('game')
-    if game_id:
-        cards = cards.filter(card_set__game__id=game_id)
-
-    # 🔹 Filtro por cor
-    color = request.GET.get('color')
-    if color:
-        cards = cards.filter(color=color)
-
-    # 🔹 Filtro por nome (busca)
     search = request.GET.get('search')
     if search:
         cards = cards.filter(name__icontains=search)
 
-    # 🔹 Ordenação por preço
+    code = request.GET.get('code')
+    if code:
+        cards = cards.filter(card_id__icontains=code)
+
+    color = request.GET.get('color')
+    if color and color != "":
+        cards = cards.filter(color=color)
+
+    set_id = request.GET.get('set')
+    if set_id and set_id != "":
+        cards = cards.filter(card_set__id=set_id)
+
     order = request.GET.get('order')
-    if order == 'asc':
-        cards = cards.order_by('price')
-    elif order == 'desc':
-        cards = cards.order_by('-price')
+    if order == "asc":
+        cards = cards.order_by("price")
+    elif order == "desc":
+        cards = cards.order_by("-price")
 
-    context = {
-        'cards': cards,
-        'games': games,
-        'titulo_pagina': 'Catálogo de Cartas',
-    }
-    return render(request, 'loja/card_list.html', context)
+    colors = Card.objects.values_list("color", flat=True).distinct()
+    sets = CardSet.objects.all()
+
+    return render(request, "loja/card_list.html", {
+        "cards": cards,
+        "colors": colors,
+        "sets": sets,
+        "titulo_pagina": "Catálogo de Cartas",
+    })
 
 
-# 📄 Detalhes da Carta
 def card_detail_view(request, card_id):
     card = get_object_or_404(Card, id=card_id)
-    
-    context = {
-        'titulo_pagina': card.name,
-        'card': card,
-    }
-    
-    return render(request, 'loja/card_detail.html', context)
+
+    return render(request, "loja/card_detail.html", {
+        "card": card,
+        "titulo_pagina": card.name,
+    })
 
 
-# 🛒 Adicionar ao carrinho
 def add_to_cart(request, card_id):
     card = get_object_or_404(Card, id=card_id)
 
-    # Pega (ou cria) um pedido ativo
     order, created = Order.objects.get_or_create(
-        user=request.user if request.user.is_authenticated else None,
-        complete=False
+        user=request.user,
+        completed=False
     )
 
-    # Verifica se o card já está no pedido
-    order_item, created = OrderItem.objects.get_or_create(order=order, card=card)
-    if not created:
-        order_item.quantity += 1
-        order_item.save()
+    item, item_created = OrderItem.objects.get_or_create(
+        order=order,
+        card=card
+    )
+
+    if not item_created:
+        item.quantity += 1
+        item.save()
 
     return redirect('card_detail', card_id=card.id)
